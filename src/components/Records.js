@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Record from './Record'
 import * as RecordsAPI from '../utils/RecordsAPI'
 import RecordForm from './RecordForm'
+
 class Records extends Component {
     constructor(){
         super();
@@ -15,7 +16,7 @@ class Records extends Component {
     componentDidMount(){
         RecordsAPI.getAll().then(
             response => this.setState({
-                records: response,
+                records: response.data,
                 isLoaded: true
             }),
             error => this.setState({
@@ -25,11 +26,22 @@ class Records extends Component {
         )
     }
 
+    addRecord(record){
+        this.setState({
+            error:null,
+            isLoaded:true,
+            records:[
+                ...this.state.records,
+                record
+            ]
+        })
+    }
+
     render() {
         const {error , isLoaded, records} = this.state;
         let recordsComponent;
         if(error){
-            recordsComponent = <div>Error: {error.responseText}</div>
+            recordsComponent = <div>Error: {error.message}</div>
         }
         else if (!isLoaded){
             recordsComponent = <div>Loading...</div>
@@ -52,7 +64,7 @@ class Records extends Component {
             return (
                 <div>
                     <h2>Records</h2>
-                    <RecordForm />
+                    <RecordForm handleNewRecord={this.addRecord.bind(this)}/>
                     {recordsComponent}
                 </div>
             )
