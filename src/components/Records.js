@@ -37,6 +37,25 @@ class Records extends Component {
         })
     }
 
+    updateRecord(record,data){
+        const recordIndex = this.state.records.indexOf(record);
+        const newRecords = this.state.records.map((item, index) => {
+            if (index !== recordIndex) {
+                // This isn't the item we care about - keep it as-is
+                return item
+            }
+
+            // Otherwise, this is the one we want - return an updated value
+            return {
+                ...item,
+                ...data
+            };
+        });
+        this.setState({
+            records: newRecords
+        })
+    }
+
     render() {
         const {error , isLoaded, records} = this.state;
         let recordsComponent;
@@ -53,10 +72,11 @@ class Records extends Component {
                                 <th>Date</th>
                                 <th>Title</th>
                                 <th>Amount</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {records.map((record) => <Record key = {record.id} {...record}/>)}
+                            {records.map((record) => <Record key = {record.id} record={record} handleEditRecord={this.updateRecord.bind(this)}/>)}
                             </tbody>
                         </table>
                 );
