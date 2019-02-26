@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Record from './Record'
+import Record from './Record';
 import * as RecordsAPI from '../utils/RecordsAPI'
 import RecordForm from './RecordForm'
 
